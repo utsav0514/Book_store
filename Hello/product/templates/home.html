@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home page
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Georgia', 'Times New Roman', serif;
+        line-height: 1.6;
+        background-color: #fefcf8;
+    }
+
+    .main-heading {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(to right, #a18cd1, #fbc2eb); /* soft lavender to blush */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-top: 50px;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+    }
+
+    .main-subtext {
+        text-align: center;
+        font-size: 1.1rem;
+        color: #6b6b6b;
+        margin-bottom: 50px;
+        font-style: italic;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .blog-section,
+    .about-section {
+        background-color: #fffdfb;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .blog-section h5 {
+        color: #5a4e7c;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .blog-section p,
+    .about-section p {
+        color: #4a4a4a;
+        font-size: 0.97rem;
+        margin-bottom: 20px;
+    }
+</style>
+
+<h1 class="main-heading">Welcome to Pustak Bhandar</h1>
+<p class="main-subtext">A peaceful corner for every book lover</p>
+
+
+
+<!-- Blog Section -->
+<div class="container blog-section">
+    <h2 class="section-title">📖 Latest Blogs</h2>
+    <div>
+        <h5>1. The Joy of Reading Daily</h5>
+        <p>Discover how just 10 pages a day can shape your thinking, calm your mind, and boost creativity.</p>
+    </div>
+    <div>
+        <h5>2. Top 5 Books to Start Your Reading Journey</h5>
+        <p>Looking to get into reading? These beginner-friendly picks will help you fall in love with books.</p>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="container about-section">
+    <h2 class="section-title">📘 About Us</h2>
+    <p>
+        Pustak Bhandar is more than just an online bookstore. We are a community of book lovers who believe in
+        the magic of words. Our mission is to make quality books accessible to everyone — students, readers,
+        researchers, and dreamers.
+    </p>
+</div>
+
+{% endblock %}

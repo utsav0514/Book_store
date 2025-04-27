@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Order Successful!</h2>
+  <p>Your order for the book "{{ order.book.title }}" has been placed successfully.</p>
+  <p>Thank you for your purchase!</p>
+  <a href="{% url 'home' %}">Go back to homepage</a>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Book Creation
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Creating Books</h1>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+
+
+    <div class="mt-4">
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+{% endblock %}
