@@ -1,67 +1,434 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Book List
+    Book List - Bookbar
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">Book List</h1>
-
-    <div class="text-end mb-4">
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-warning">Logout</button>
-        </form>
+<div class="book-list-container">
+    <div class="header-section">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="header-title">
+                    <div class="brand-logo">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h1>Book Collection</h1>
+                </div>
+<!--                 
+                <div class="user-controls">
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="btn custom-btn-dark dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-1"></i>
+                                {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <form method="POST" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div> -->
+            </div>
+        </div>
     </div>
 
+    <div class="container main-content">
+        {% if user.is_authenticated and user.is_superuser %}
+            <div class="admin-controls">
+                <h5 class="admin-title">Admin Controls</h5>
+                <div class="admin-buttons">
+                    <a href="{% url 'create_book' %}" class="btn custom-btn-dark">
+                        <i class="bi bi-plus-circle me-2"></i>Add Book
+                    </a>
+                    <a href="{% url 'create_author' %}" class="btn custom-btn-outline">
+                        <i class="bi bi-person-plus me-2"></i>Add Author
+                    </a>
+                </div>
+            </div>
+        {% endif %}
 
-    {% if user.is_authenticated and user.is_superuser %}
-        <div class="text-end mb-4">
-            <a href="{% url 'create_book' %}" class="btn btn-success">Create Book</a>
+        {% if book %}
+            <div class="book-filter-section mb-4">
+                <div class="search-box">
+                    <input type="text" id="bookSearch" class="form-control" placeholder="Search books...">
+                    <i class="bi bi-search search-icon"></i>
+                </div>
+                <div class="filter-options">
+                    <select class="form-select" id="genreFilter">
+                        <option value="">All Genres</option>
+                        <!-- You could populate this dynamically with unique genres -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 book-grid">
+                {% for b in book %}
+                    <div class="col book-item" data-title="{{ b.Title|lower }}" data-genre="{{ b.Genere|lower }}">
+                        <div class="card h-100 book-card">
+                            <div class="book-cover-container">
+                                {% if b.Cover_Page %}
+                                    <img src="{{ b.Cover_Page.url }}" class="card-img-top book-cover" alt="{{ b.Title }}">
+                                {% else %}
+                                    <div class="no-cover">
+                                        <i class="bi bi-book"></i>
+                                        <span>No Cover</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ b.Title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">By {{ b.Author.Name }}</h6>
+                                
+                                <div class="book-details">
+                                    <span class="badge bg-light text-dark genre-badge">{{ b.Genere }}</span>
+                                    <span class="price-tag">${{ b.Price }}</span>
+                                </div>
+                                
+                                <p class="card-text description">{{ b.Descriptions }}</p>
+                            </div>
+                            <div class="card-footer">
+                                {% if user.is_authenticated %}
+                                    {% if user.is_superuser %}
+                                        <div class="admin-actions">
+                                            <a href="{% url 'update_book' b.id %}" class="btn btn-sm custom-btn-outline">
+                                                <i class="bi bi-pencil me-1"></i>Edit
+                                            </a>
+                                            <a href="{% url 'delete_book' b.id %}" class="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash me-1"></i>Delete
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <a href="{% url 'buy_book' b.id %}" class="btn custom-btn-dark w-100">
+                                            <i class="bi bi-cart-plus me-2"></i>Buy Now
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-book"></i>
+                </div>
+                <h3>No Books Available</h3>
+                <p>There are currently no books in the collection.</p>
+            </div>
+        {% endif %}
+
+        <div class="back-section mt-5">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-house-door me-2"></i>Back to Home
+            </a>
         </div>
-
-        <div class="text-end mb-4">
-            <a href="{% url 'create_author' %}" class="btn btn-primary">Create Author</a>
-        </div>
-    {% endif %}
-
-    {% if book %}
-        <ul class="list-unstyled">
-            {% for b in book %}
-                <li class="mb-4">
-                    <strong>Title:</strong> {{ b.Title }}<br>
-                    <strong>Description:</strong> {{ b.Descriptions }}<br>
-                    <strong>Author:</strong> {{ b.Author.Name }}<br>
-                    <strong>Genre:</strong> {{ b.Genere }}<br>
-                    <strong>Price:</strong> ${{ b.Price }}<br>
-                    
-                    {% if b.Cover_Page %}
-                        <img src="{{ b.Cover_Page.url }}" alt="Cover Page" width="150" class="mt-2">
-                    {% else %}
-                        <p>No cover page available.</p>
-                    {% endif %}
-
-                    <br>
-                    
-                    {% if user.is_authenticated %}
-                        {% if user.is_superuser %}
-                            <a href="{% url 'update_book' b.id %}" class="btn btn-primary btn-sm mt-2">Update Book</a> 
-                            <a href="{% url 'delete_book' b.id %}" class="btn btn-danger btn-sm mt-2">Delete Book</a>
-                        {% else %}
-                            <a href="{% url 'buy_book' b.id %}" class="btn btn-info btn-sm mt-2">Buy Now</a>
-                        {% endif %}
-                    {% endif %}
-                </li>
-                <hr>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No books available.</p>
-    {% endif %}
-
-    <div class="mt-4">
-        <a href="{% url 'home' %}" class="btn btn-secondary">Go Back to Home</a>
     </div>
 </div>
+
+<style>
+    /* Custom dark theme colors */
+    :root {
+        --custom-dark: #262727;
+        --custom-dark-hover: #3a3b3b;
+        --custom-dark-focus: rgba(38, 39, 39, 0.25);
+        --border-color: #e0e0e0;
+        --text-muted: #6c757d;
+        --light-bg: #f8f9fa;
+        --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    /* Overall container */
+    .book-list-container {
+        min-height: 100vh;
+        background-color: #f5f5f5;
+    }
+
+    /* Header section */
+    .header-section {
+        background-color: var(--custom-dark);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .header-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .brand-logo {
+        margin-right: 1rem;
+        color: white;
+    }
+
+    .header-title h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.8rem;
+    }
+
+    /* Main content */
+    .main-content {
+        padding-bottom: 3rem;
+    }
+
+    /* Admin controls */
+    .admin-controls {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    .admin-title {
+        margin-bottom: 1rem;
+        color: var(--custom-dark);
+        font-weight: 600;
+    }
+
+    .admin-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    /* Book filter section */
+    .book-filter-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .search-box {
+        position: relative;
+        flex: 1;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+    }
+
+    .filter-options {
+        width: 200px;
+    }
+
+    /* Book grid */
+    .book-grid {
+        margin-bottom: 2rem;
+    }
+
+    /* Book card */
+    .book-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+    }
+
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    .book-cover-container {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+    }
+
+    .book-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .no-cover {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        color: var(--text-muted);
+    }
+
+    .no-cover i {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--custom-dark);
+    }
+
+    .book-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1rem 0;
+    }
+
+    .genre-badge {
+        font-weight: 500;
+    }
+
+    .price-tag {
+        font-weight: 700;
+        color: var(--custom-dark);
+        font-size: 1.1rem;
+    }
+
+    .description {
+        color: var(--text-muted);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-footer {
+        background-color: white;
+        border-top: 1px solid var(--border-color);
+        padding: 1rem;
+    }
+
+    .admin-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+
+    /* Custom buttons */
+    .custom-btn-dark {
+        background-color: var(--custom-dark);
+        border-color: var(--custom-dark);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .custom-btn-dark:hover, 
+    .custom-btn-dark:focus {
+        background-color: var(--custom-dark-hover);
+        border-color: var(--custom-dark-hover);
+        color: white;
+    }
+
+    .custom-btn-outline {
+        color: var(--custom-dark);
+        border-color: var(--custom-dark);
+        background-color: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .custom-btn-outline:hover,
+    .custom-btn-outline:focus {
+        background-color: var(--custom-dark);
+        color: white;
+    }
+
+    /* Back section */
+    .back-section {
+        text-align: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .header-section {
+            padding: 1.5rem 0;
+        }
+        
+        .book-filter-section {
+            flex-direction: column;
+        }
+        
+        .filter-options {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('bookSearch');
+        const genreFilter = document.getElementById('genreFilter');
+        const bookItems = document.querySelectorAll('.book-item');
+        
+        // Populate genre filter
+        const genres = new Set();
+        bookItems.forEach(book => {
+            const genre = book.dataset.genre;
+            if (genre) {
+                genres.add(genre);
+            }
+        });
+        
+        genres.forEach(genre => {
+            const option = document.createElement('option');
+            option.value = genre;
+            option.textContent = genre.charAt(0).toUpperCase() + genre.slice(1);
+            genreFilter.appendChild(option);
+        });
+        
+        // Search and filter functionality
+        function filterBooks() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedGenre = genreFilter.value.toLowerCase();
+            
+            bookItems.forEach(book => {
+                const title = book.dataset.title;
+                const genre = book.dataset.genre;
+                
+                const matchesSearch = title.includes(searchTerm);
+                const matchesGenre = selectedGenre === '' || genre === selectedGenre;
+                
+                if (matchesSearch && matchesGenre) {
+                    book.style.display = '';
+                } else {
+                    book.style.display = 'none';
+                }
+            });
+        }
+        
+        searchInput.addEventListener('input', filterBooks);
+        genreFilter.addEventListener('change', filterBooks);
+    });
+</script>
 {% endblock %}
