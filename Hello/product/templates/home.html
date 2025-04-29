@@ -10,85 +10,211 @@ Home page
     body {
         font-family: 'Georgia', 'Times New Roman', serif;
         line-height: 1.6;
-        background-color: #fefcf8;
+        background-color: #f8f5f0;
+        color: #2a2a2a;
+    }
+
+    .hero-section {
+        background-image: linear-gradient(to right, rgba(161, 140, 209, 0.15), rgba(251, 194, 235, 0.15));
+        padding: 60px 0 50px;
+        margin-bottom: 40px;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 4px 20px rgb(250, 249, 249);
+    }
+
+    .container {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 15px;
     }
 
     .main-heading {
-        font-size: 3rem;
+        font-size: 3.5rem;
         font-weight: 700;
-        background: linear-gradient(to right, #a18cd1, #fbc2eb); /* soft lavender to blush */
+        background: linear-gradient(to right, #ffffff, #ffffff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-align: center;
-        margin-top: 50px;
         margin-bottom: 15px;
         letter-spacing: 1px;
     }
 
     .main-subtext {
         text-align: center;
-        font-size: 1.1rem;
-        color: #6b6b6b;
-        margin-bottom: 50px;
+        font-size: 1.2rem;
+        color: #e2e2e2;
+        margin-bottom: 30px;
         font-style: italic;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .section-title {
-        font-size: 1.8rem;
+        font-size: 2rem;
         font-weight: 600;
         color: #333;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, #a18cd1, #fbc2eb);
+        border-radius: 3px;
+    }
+
+    .content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    @media (min-width: 768px) {
+        .content-wrapper {
+            grid-template-columns: 2fr 3fr;
+        }
     }
 
     .blog-section,
     .about-section {
-        background-color: #fffdfb;
-        padding: 30px;
+        background-color: #ffffff;
+        padding: 35px;
         border-radius: 12px;
-        margin-bottom: 40px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .blog-section h5 {
+    .blog-section:hover,
+    .about-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .blog-post {
+        padding: 20px 0;
+        border-bottom: 1px solid #f0e9e9;
+    }
+
+    .blog-post:last-child {
+        border-bottom: none;
+    }
+
+    .blog-post h5 {
         color: #5a4e7c;
         font-weight: 600;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
     }
 
-    .blog-section p,
+    .blog-post h5::before {
+        content: "📚";
+        margin-right: 10px;
+        font-size: 1.4rem;
+    }
+
+    .blog-post p {
+        color: #4a4a4a;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        line-height: 1.7;
+    }
+
+    .read-more {
+        display: inline-block;
+        color: #7b6ca6;
+        font-weight: 600;
+        text-decoration: none;
+        position: relative;
+    }
+
+    .read-more::after {
+        content: "→";
+        margin-left: 5px;
+        transition: transform 0.2s ease;
+    }
+
+    .read-more:hover::after {
+        transform: translateX(5px);
+    }
+
     .about-section p {
         color: #4a4a4a;
-        font-size: 0.97rem;
+        font-size: 1.05rem;
+        line-height: 1.8;
         margin-bottom: 20px;
+    }
+
+    .about-section p:last-child {
+        margin-bottom: 0;
+    }
+
+    .highlight {
+        font-weight: 600;
+        color: #5a4e7c;
+    }
+
+    .footer-section {
+        text-align: center;
+        margin-top: 30px;
+        padding: 20px 0;
+        color: #6b6b6b;
+        font-size: 0.9rem;
     }
 </style>
 
-<h1 class="main-heading">Welcome to Pustak Bhandar</h1>
-<p class="main-subtext">A peaceful corner for every book lover</p>
-
-
-
-<!-- Blog Section -->
-<div class="container blog-section">
-    <h2 class="section-title">📖 Latest Blogs</h2>
-    <div>
-        <h5>1. The Joy of Reading Daily</h5>
-        <p>Discover how just 10 pages a day can shape your thinking, calm your mind, and boost creativity.</p>
-    </div>
-    <div>
-        <h5>2. Top 5 Books to Start Your Reading Journey</h5>
-        <p>Looking to get into reading? These beginner-friendly picks will help you fall in love with books.</p>
+<div class="hero-section">
+    <div class="container">
+        <h1 class="main-heading">Welcome to Bookbar</h1>
+        <p class="main-subtext">A peaceful corner for every book lover, where stories come alive and imagination flourishes</p>
     </div>
 </div>
 
-<!-- About Section -->
-<div class="container about-section">
-    <h2 class="section-title">📘 About Us</h2>
-    <p>
-        Pustak Bhandar is more than just an online bookstore. We are a community of book lovers who believe in
-        the magic of words. Our mission is to make quality books accessible to everyone — students, readers,
-        researchers, and dreamers.
-    </p>
+<div class="container">
+    <div class="content-wrapper">  <!-- About Section -->
+        <div class="about-section">
+            <h2 class="section-title">About Us</h2>
+            <p>
+                <span class="highlight">At Bookbar,</span>we’re more than just an online bookstore — we’re a vibrant community of readers who believe in the transformative power of books.
+            </p>
+            <p>
+                Our mission is simple: to make quality literature accessible to everyone — from curious students and passionate readers to dedicated researchers and lifelong dreamers. Every title in our carefully curated collection is chosen for its ability to inspire, educate, and open doors to new ideas, stories, and worlds.
+            </p>
+            <p>
+                <span class="highlight">Join us in celebrating the magic of reading — one book at a time.</span>
+            </p>
+        </div
+        <!-- Blog Section -->
+        <div class="blog-section">
+            <h2 class="section-title">Latest Blogs</h2>
+            
+            <div class="blog-post">
+                <h5>The joy of reading is a joy indeed</h5>
+                <p>Reading opens up new worlds, sparks imagination, and offers a welcome escape from the everyday. Whether you're just starting out or getting back into the habit, these five beginner-friendly books are the perfect way to fall in love with stories and make reading a joyful part of your life.</p>
+                <a href="https://medium.com/the-shortform/the-joy-of-reading-is-a-joy-indeed-2cab5b20582a" target="_blank" class="read-more">Continue reading</a>
+            </div>
+            
+            <div class="blog-post">
+                <h5>5 Perfect Books to Kick Start Your Reading Journey</h5>
+                <p>Looking to get into reading but not sure where to start? This list features five easy-to-read, engaging books that are perfect for beginners. Whether you enjoy adventure, romance, mystery, or inspiration, these picks will help you fall in love with reading.</p>
+                <a href="https://medium.com/@digitalqueenanu/5-perfect-books-to-kick-start-your-reading-journey-dbbade943af3" target="_blank" class="read-more">Continue reading</a>
+            </div>
+        </div>
+
+      >
+    </div>
+</div>
+
+<div class="footer-section">
+    <p>© 2025 Bookbar. All rights reserved.</p>
 </div>
 
 {% endblock %}
