@@ -1,8 +1,157 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Order Successful!</h2>
-  <p>Your order for the book "{{ order.book.title }}" has been placed successfully.</p>
-  <p>Thank you for your purchase!</p>
-  <a href="{% url 'home' %}">Go back to homepage</a>
+<div class="success-container">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card shadow-lg border-0 rounded-lg">
+          <!-- Card Header -->
+          <div class="card-header custom-bg-dark text-white text-center py-4">
+            <div class="success-icon mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+              </svg>
+            </div>
+            <h2 class="font-weight-light mb-0">Order Successful!</h2>
+          </div>
+          
+          <!-- Card Body -->
+          <div class="card-body p-4 p-md-5 text-center">
+            <div class="success-message">
+              <div class="book-icon mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                  <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                </svg>
+              </div>
+              <h4 class="mb-4">Thank you for your purchase!</h4>
+              <div class="order-details p-3 mb-4">
+                <p class="mb-0">Your order for the book</p>
+                <!-- <p class="book-title mb-0">"{{ order.book.title }}"</p> -->
+                <p class="mb-0">has been placed successfully.</p>
+              </div>
+              <div class="d-grid gap-2">
+                <a href="{% url 'book_list' %}" class="btn custom-btn-dark btn-lg home-btn">
+                  <i class="bi bi-house-door me-2"></i>Back to Book List
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card Footer -->
+          <div class="card-footer text-center py-3">
+            <p class="mb-0 text-muted">
+              Order ID: <span class="fw-bold">{{ order.id|default:'#ORD-2023' }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Custom dark theme colors */
+  :root {
+    --custom-dark: #262727;
+    --custom-dark-hover: #3a3b3b;
+    --custom-dark-focus: rgba(38, 39, 39, 0.25);
+    --border-color: #e0e0e0;
+    --text-muted: #6c757d;
+    --success-color: #28a745;
+  }
+  
+  /* Success container with gradient background */
+  /* .success-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
+  
+  /* Card styling */
+  .card {
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  
+  /* Card header with animation */
+  .custom-bg-dark {
+    background-color: var(--custom-dark) !important;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shine 3s infinite;
+  }
+  
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+  
+  /* Success icon animation */
+  .success-icon {
+    animation: scaleUp 0.5s ease-in-out;
+    color: var(--success-color);
+  }
+  
+  @keyframes scaleUp {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  /* Book title styling */
+  .book-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--custom-dark);
+    margin: 0.5rem 0;
+  }
+  
+  /* Order details box */
+  .order-details {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+  }
+  
+  /* Home button styling */
+  .custom-btn-dark {
+    background-color: var(--custom-dark);
+    border-color: var(--custom-dark);
+    color: white;
+    transition: all 0.2s ease;
+  }
+  
+  .home-btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    background-color: var(--custom-dark) !important;
+    border-color: var(--custom-dark) !important;
+  }
+  
+  /* Book icon styling */
+  .book-icon {
+    color: var(--custom-dark);
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+</style>
 {% endblock %}
