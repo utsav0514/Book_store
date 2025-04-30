@@ -1,17 +1,226 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
-Update Book
+    Update Book
 {% endblock %}
 
 {% block content %}
-<h2>Update Book</h2>
+<div class="update-container">
+    <div class="update-card">
+        <div class="update-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2>Update Book</h2>
+        </div>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
+        <div class="update-content">
+            <form method="POST" enctype="multipart/form-data" class="update-form">
+                {% csrf_token %}
+                
+                <div class="form-fields">
+                    {{ form.as_p }}
+                </div>
+                
+                <div class="form-actions">
+                    <a href="{% url 'book_list' %}" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Back to Books
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M17 21v-8h-10v8M7 3v5h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Update Book
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-<a href="{% url 'book_list' %}">Back </a>
+<style>
+    /* Update container */
+    .update-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* Update card */
+    .update-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    /* Update header */
+    .update-header {
+        background-color: #3498db;
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .update-header svg {
+        margin-right: 12px;
+    }
+
+    .update-header h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    /* Update content */
+    .update-content {
+        padding: 30px;
+    }
+
+    /* Form styling */
+    .update-form {
+        width: 100%;
+    }
+
+    .form-fields {
+        margin-bottom: 30px;
+    }
+
+    /* Style Django's form.as_p output */
+    .form-fields p {
+        margin-bottom: 20px;
+    }
+
+    .form-fields label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .form-fields input[type="text"],
+    .form-fields input[type="number"],
+    .form-fields input[type="email"],
+    .form-fields input[type="url"],
+    .form-fields input[type="file"],
+    .form-fields select,
+    .form-fields textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: border-color 0.2s ease;
+    }
+
+    .form-fields input[type="text"]:focus,
+    .form-fields input[type="number"]:focus,
+    .form-fields input[type="email"]:focus,
+    .form-fields input[type="url"]:focus,
+    .form-fields input[type="file"]:focus,
+    .form-fields select:focus,
+    .form-fields textarea:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .form-fields textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* Help text styling */
+    .form-fields .helptext {
+        display: block;
+        font-size: 14px;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+    /* Error styling */
+    .form-fields .errorlist {
+        list-style: none;
+        color: #dc3545;
+        padding: 0;
+        margin: 5px 0 0 0;
+        font-size: 14px;
+    }
+
+    /* Form actions */
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 16px;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        font-size: 16px;
+        transition: all 0.2s ease;
+    }
+
+    .btn svg {
+        margin-right: 8px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-primary {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+
+    /* Media queries for responsiveness */
+    @media (max-width: 576px) {
+        .update-container {
+            margin: 20px auto;
+        }
+        
+        .update-header {
+            padding: 15px;
+        }
+        
+        .update-content {
+            padding: 20px;
+        }
+        
+        .form-actions {
+            flex-direction: column-reverse;
+            gap: 15px;
+        }
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
 {% endblock %}

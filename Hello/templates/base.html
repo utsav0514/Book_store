@@ -312,9 +312,12 @@
                 {% if user.is_authenticated %}
                     <!-- Show when user is logged in -->
                     <div class="user-menu">
-                        <div class="user-icon">
-                            <i class="bi bi-person-fill"></i>
-                        </div>
+                        <a href="{% url 'home' %}">
+                            <div class="user-icon">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                        </a>
+
                         <form method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <button type="submit" class="btn auth-btn login-btn">

@@ -53,8 +53,8 @@ Login - Bookbar
                             <button type="submit" class="btn custom-btn-dark btn-lg">Sign In</button>
                         </div>
                     </form>
-<!--                     
-                    <div class="divider my-4">
+                    
+                    <div class="divider my-4" style="color:#e0e0e0">
                         <span>or</span>
                     </div>
                     
@@ -66,13 +66,13 @@ Login - Bookbar
                             Sign in with Google
                         </button>
                     </div>
-                </div> -->
+                </div>
                 <div class="card-footer text-center py-3">
                     <div class="small mb-3">
                         Don't have an account? 
                         <a href="{% url 'registration' %}" class="custom-text-dark fw-bold">Sign up here</a>
                     </div>
-                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary back-home-btn" style="color: white;">
                         <i class="bi bi-house-door me-1"></i> Back to Home
                     </a>
                 </div>
@@ -89,6 +89,10 @@ Login - Bookbar
         --custom-dark-focus: rgba(38, 39, 39, 0.25);
         --border-color: #e0e0e0;
         --text-muted: #6c757d;
+    }
+
+    .container:hover {
+        transform: translateY(0);
     }
 
     /* Replace blue background with dark gray */
@@ -115,7 +119,7 @@ Login - Bookbar
 
     /* Replace blue text with dark gray */
     .custom-text-dark {
-        color: var(--custom-dark) !important;
+        color: white;
     }
 
     .custom-text-dark:hover {
@@ -192,11 +196,18 @@ Login - Bookbar
     }
     
     .google-btn:hover {
+        color: #262727;
         background-color: #f8f9fa;
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        
     }
     
+
+    .card:hover {
+        transform: translateY(0px)
+    }
+
     /* Brand logo */
     .brand-logo {
         display: inline-flex;
@@ -219,6 +230,10 @@ Login - Bookbar
         height: 4px;
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
         animation: shine 3s infinite;
+    }
+
+    .back-home-btn:hover {
+        background-color: #262727;
     }
     
     @keyframes shine {
