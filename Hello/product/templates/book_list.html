@@ -18,7 +18,7 @@
                     </div>
                     <h1>Book Collection</h1>
                 </div>
-<!--                 
+              
                 <div class="user-controls">
                     {% if user.is_authenticated %}
                         <div class="dropdown">
@@ -38,7 +38,7 @@
                             </ul>
                         </div>
                     {% endif %}
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -54,6 +54,9 @@
                     <a href="{% url 'create_author' %}" class="btn custom-btn-outline">
                         <i class="bi bi-person-plus me-2"></i>Add Author
                     </a>
+                    <a href="{% url 'author_list' %}" class="btn custom-btn-outline">
+                        <i class="bi bi-person-plus me-2"></i>Author_list
+                    </a>
                 </div>
             </div>
         {% endif %}
@@ -67,7 +70,7 @@
                 <div class="filter-options">
                     <select class="form-select" id="genreFilter">
                         <option value="">All Genres</option>
-                        <!-- You could populate this dynamically with unique genres -->
+                     
                     </select>
                 </div>
             </div>
@@ -92,7 +95,7 @@
                                 
                                 <div class="book-details">
                                     <span class="badge bg-light text-dark genre-badge">{{ b.Genere }}</span>
-                                    <span class="price-tag">${{ b.Price }}</span>
+                                    <span class="price-tag">NRP{{ b.Price }}</span>
                                 </div>
                                 
                                 <p class="card-text description">{{ b.Descriptions }}</p>
@@ -129,11 +132,7 @@
             </div>
         {% endif %}
 
-        <!-- <div class="back-section mt-5">
-            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-                <i class="bi bi-house-door me-2"></i>Back to Home
-            </a>
-        </div> -->
+        
     </div>
 </div>
 

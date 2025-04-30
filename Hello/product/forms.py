@@ -23,4 +23,6 @@ class OrderForm(forms.ModelForm):
 class User_RegistrationForm(forms.ModelForm):
     class Meta:
         model= User_registration
-        fields= ['username','email']
+        fields= ['email']
+
+

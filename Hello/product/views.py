@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 
+
 def home(request):
     return render(request, 'home.html' )
 
@@ -147,3 +148,6 @@ def buy_book(request, pk):
 def order_success(request):
 
     return render(request, 'order_success.html')
+
+
+
