@@ -150,4 +150,9 @@ def order_success(request):
     return render(request, 'order_success.html')
 
 
+@login_required
+def profile_view(request):
+
+    return render(request, 'profile.html', {'user': request.user})
+
 
