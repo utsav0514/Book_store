@@ -65,7 +65,7 @@
                                 <label for="email">Email Address</label>
                             </div>
                             
-                            <div class="form-floating mb-4">
+                            <div class="form-floating mb-4 password-field">
                                 <input type="password" name="password" id="password" class="form-control custom-focus" placeholder="Password" required>
                                 <label for="password">Password</label>
                                 <button type="button" class="password-toggle" onclick="togglePassword()">
@@ -205,21 +205,25 @@
         overflow: hidden;
     }
     
-    /* Password toggle button */
-    .form-floating {
+    /* Password field container */
+    .password-field {
         position: relative;
     }
     
+    /* Password toggle button - FIXED POSITIONING */
     .password-toggle {
         position: absolute;
         right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 16px; /* Fixed position to align with input text */
         background: none;
         border: none;
         color: var(--text-muted);
         cursor: pointer;
         z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 24px;
     }
     
     /* Divider style */
@@ -275,6 +279,11 @@
     @media (max-width: 576px) {
         .card-body {
             padding: 1.5rem !important;
+        }
+        
+        /* Adjust eye icon position for mobile */
+        .password-toggle {
+            top: 14px;
         }
     }
 </style>
