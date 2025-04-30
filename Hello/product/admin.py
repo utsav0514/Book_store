@@ -6,3 +6,4 @@ admin.site.register(Author)
 admin.site.register(Book)
 
 admin.site.register(Order)
+

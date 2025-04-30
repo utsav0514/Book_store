@@ -36,13 +36,12 @@ class Order(models.Model):
 
 class User_registration(models.Model):
 
-    username=models.OneToOneField(User, on_delete=models.CASCADE)
+    user=models.OneToOneField(User, on_delete=models.CASCADE)
 
     email= models.EmailField()
 
     def __str__(self):
         return self.user.username
-    
 
-    
+
 
