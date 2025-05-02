@@ -46,6 +46,12 @@
                     <input type="text" id="bookSearch" class="form-control" placeholder="Search books Here....">
                     <i class="bi bi-search search-icon"></i>
                 </div>
+                <!-- View Cart button between search and filter -->
+                <div class="view-cart-container">
+                    <a href="{% url 'view_cart' %}" class="btn view-cart-btn">
+                        <i class="bi bi-cart3 me-2"></i>View Cart
+                    </a>
+                </div>
                 <div class="filter-options">
                     <select class="form-select" id="genreFilter">
                         <option value="">All Genres</option>
@@ -70,7 +76,7 @@
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">{{ b.Title }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">By {{ b.Author.Name }}</h6>
+                                <h6 class="card-subtitle mb-2 author-name">By {{ b.Author.Name }}</h6>
                                 
                                 <div class="book-details">
                                     <span class="badge genre-badge">{{ b.Genere }}</span>
@@ -91,18 +97,14 @@
                                             </a>
                                         </div>
                                     {% else %}
-                                        <a href="{% url 'buy_book' b.id %}" class="btn custom-btn-dark w-100">
-                                            <i class="bi bi-cart-plus me-2"></i>Buy Now
-                                        </a>
-                                        <a href="{% url 'view_cart' %}" class="btn btn-outline-secondary">
-                                            <i class="bi bi-cart3 me-2"></i>View Cart
-                                        </a>
-                                        <a href="{% url 'add_to_cart' b.id %}" class="btn btn-outline-secondary">
-                                            <i class="bi bi-cart3 me-2"></i>Add Cart
-                                        </a>
-                                       
-                                        
-                                       
+                                        <div class="action-buttons">
+                                            <a href="{% url 'buy_book' b.id %}" class="btn custom-btn-dark w-100 mb-2">
+                                                <i class="bi bi-cart-plus me-2"></i>Buy Now
+                                            </a>
+                                            <a href="{% url 'add_to_cart' b.id %}" class="btn custom-btn-outline w-100">
+                                                <i class="bi bi-plus-circle me-2"></i>Add to Cart
+                                            </a>
+                                        </div>
                                     {% endif %}
                                 {% endif %}
                             </div>
@@ -223,11 +225,40 @@
         padding: 1.25rem;
         border-radius: 12px;
         box-shadow: var(--card-shadow);
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .search-box {
         position: relative;
         flex: 1;
+        min-width: 200px;
+    }
+
+    .view-cart-container {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Updated View Cart button with black background and no hover transition */
+    .view-cart-btn {
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.25rem;
+        font-weight: 500;
+        border-radius: 8px;
+        background-color: var(--primary-dark);
+        color: white;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* No hover effect for view cart button */
+    .view-cart-btn:hover, 
+    .view-cart-btn:focus {
+        background-color: var(--primary-dark);
+        color: white;
     }
 
     .form-control, .form-select {
@@ -323,8 +354,9 @@
         font-size: 1.25rem;
     }
 
-    .card-subtitle {
-        color: var(--text-light);
+    /* Updated author name style to be darker */
+    .author-name {
+        color: var(--text-dark);
         font-weight: 500;
         margin-bottom: 1rem;
     }
@@ -373,6 +405,13 @@
     .admin-actions {
         display: flex;
         gap: 0.75rem;
+    }
+
+    /* Action buttons container */
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
     /* Empty state */
@@ -462,8 +501,14 @@
             flex-direction: column;
         }
         
-        .filter-options {
+        .filter-options, .view-cart-container {
             width: 100%;
+            margin-top: 0.75rem;
+        }
+
+        .view-cart-btn {
+            width: 100%;
+            justify-content: center;
         }
 
         .admin-buttons {
