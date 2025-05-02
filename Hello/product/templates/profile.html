@@ -3,5 +3,11 @@
   <div class="container">
     <h2>{{ user.username }}'s Profile</h2>
     <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail" style="width: 200px;">
+    <br><br>
+
+    <a href="{% url 'update-profile' %}" class="btn btn-primary">Update Profile Picture</a>
+    <a href="{% url 'book_list' %}" class="btn btn-secondary">← Back to Book List</a>
+
+
   </div>
 {% endblock %}

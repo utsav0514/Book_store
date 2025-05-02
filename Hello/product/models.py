@@ -24,7 +24,6 @@ class Book(models.Model):
         return self.Title
 
 
-
 class Order(models.Model):
     user= models.ForeignKey(User, on_delete=models.CASCADE)
     Book= models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -44,12 +43,34 @@ class User_registration(models.Model):
         return self.user.username
 
 
-
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.jpg')
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+    
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Cart"
+
+    def total_price(self):
+        return sum(item.total_price() for item in self.cart_items.all())
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, related_name='cart_items', on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.book.Title} in {self.cart.user.username}'s cart"
+
+    def total_price(self):
+        return self.book.Price * self.quantity
+
+
+
