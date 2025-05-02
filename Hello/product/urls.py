@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+from django.urls import path
+from . import views
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('create_book/', views.create_book, name="create_book"),
@@ -12,12 +15,14 @@ urlpatterns = [
     path('delete_author/<int:pk>/', views.delete_author, name='delete_author'),
     path('register/', views.registration, name="registration"),
     path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout') ,
+    path('logout/', views.logout_view, name='logout'),
     path('buy/<int:pk>', views.buy_book, name='buy_book'),
     path('order_success/', views.order_success, name='order_success'),
-    path('profile/', views.profile_view, name='profile')
+    path('profile/', views.profile_view, name='profile'),
+    path('view_cart/', views.view_cart, name='view_cart'),  
+    path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    path('update-cart-item/<int:pk>/', views.update_cart_item, name='update_cart_item'),
 
-
-
-
+    path('remove_from_cart/<int:pk>/', views.remove_from_cart, name='remove_from_cart'),
+    path('update_profile', views.update_profile, name='update-profile')
 ]

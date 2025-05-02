@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Author, Book,  Order,User_registration
+from .models import Author, Book,  Order,User_registration,CartItem,Cart,Profile
 
 class AuthorForm(forms.ModelForm):
     class Meta:
@@ -25,4 +25,25 @@ class User_RegistrationForm(forms.ModelForm):
         model= User_registration
         fields= ['email']
 
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['profile_picture']
 
+class CartForm(forms.ModelForm):
+    class Meta:
+        model = Cart
+        fields = ['user'] 
+
+class CartItemForm(forms.ModelForm):
+    class Meta:
+        model = CartItem
+        fields = ['cart', 'book', 'quantity']
+        widgets = {
+            'cart': forms.HiddenInput(),  
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+       
+        self.fields['quantity'].widget.attrs.update({'min': 1})  

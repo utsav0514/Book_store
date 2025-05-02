@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h2>Item Added to Cart</h2>
+
+<p><strong>{{ book.Title }}</strong> has been added to your cart.</p>
+
+<a href="{% url 'view_cart' %}">View Cart</a> |
+<a href="{% url 'book_list' %}">Continue Shopping</a>
+{% endblock %}

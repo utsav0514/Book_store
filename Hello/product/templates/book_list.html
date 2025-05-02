@@ -94,6 +94,15 @@
                                         <a href="{% url 'buy_book' b.id %}" class="btn custom-btn-dark w-100">
                                             <i class="bi bi-cart-plus me-2"></i>Buy Now
                                         </a>
+                                        <a href="{% url 'view_cart' %}" class="btn btn-outline-secondary">
+                                            <i class="bi bi-cart3 me-2"></i>View Cart
+                                        </a>
+                                        <a href="{% url 'add_to_cart' b.id %}" class="btn btn-outline-secondary">
+                                            <i class="bi bi-cart3 me-2"></i>Add Cart
+                                        </a>
+                                       
+                                        
+                                       
                                     {% endif %}
                                 {% endif %}
                             </div>
