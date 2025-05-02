@@ -1,14 +1,216 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Update Profile Picture</h2>
-  
-  <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Update Profile</button>
-  </form>
+<div class="profile-update-container">
+    <div class="header-section">
+        <div class="container">
+            <div class="header-title">
+                <div class="brand-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1>Update Profile Picture</h1>
+            </div>
+        </div>
+    </div>
 
-  <br>
-  <a href="{% url 'book_list' %}" class="btn btn-secondary">← Back to Book List</a>
+    <div class="container main-content">
+        <div class="profile-card">
+            <div class="profile-icon">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                    <button type="submit" class="btn update-btn">
+                        <i class="bi bi-check-circle me-2"></i>Confirm Update Profile
+                    </button>
+                </div>
+            </form>
+            
+            <div class="back-link">
+                <a href="{% url 'book_list' %}" class="btn back-btn">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Book List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modern color palette - matching the cart page */
+    :root {
+        --primary-color: #050505;
+        --primary-dark: #000000;
+        --primary-light: #eef2f7;
+        --accent-color: #272622;
+        --text-dark: #030303;
+        --text-light: #0b0b0b;
+        --bg-light: #3b3d3fcb;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --success: #38a169;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Overall container */
+    .profile-update-container {
+        min-height: auto;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Header section with gradient - matching the cart page */
+    .header-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .brand-logo {
+        margin-bottom: 1rem;
+        color: rgb(184, 176, 176);
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-title h1 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Main content */
+    .main-content {
+        padding: 0 1rem 2rem;
+        flex: 1;
+    }
+
+    /* Profile card */
+    .profile-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        padding: 2rem;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .profile-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    /* Form styling */
+    .profile-form {
+        margin-bottom: 1.5rem;
+    }
+
+    .profile-form p {
+        margin-bottom: 1.5rem;
+    }
+
+    .profile-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .profile-form input[type="file"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--primary-light);
+    }
+
+    /* Button styling */
+    .form-actions {
+        margin-top: 1.5rem;
+    }
+
+    .update-btn {
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.25rem;
+        font-weight: 500;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .update-btn:hover, .update-btn:focus, .update-btn:active {
+        background-color: black;
+        color: white;
+        outline: none;
+        box-shadow: none;
+    }
+
+    .back-link {
+        text-align: center;
+    }
+
+    .back-btn {
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.25rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .back-btn:hover, .back-btn:focus, .back-btn:active {
+        background-color: black;
+        color: white;
+        outline: none;
+        box-shadow: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .header-section {
+            padding: 1.5rem 0;
+        }
+
+        .profile-card {
+            padding: 1.5rem;
+        }
+    }
+
+    /* Ensure the page takes only the space it needs */
+    html, body {
+        height: auto;
+        min-height: 100%;
+    }
+</style>
 {% endblock %}

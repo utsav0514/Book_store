@@ -1,11 +1,201 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-<h2>Item Added to Cart</h2>
+<div class="add-to-cart-container">
+    <div class="header-section">
+        <div class="container">
+            <div class="header-title">
+                <div class="brand-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1>Item Added to Cart</h1>
+            </div>
+        </div>
+    </div>
 
-<p><strong>{{ book.Title }}</strong> has been added to your cart.</p>
+    <div class="container main-content">
+        <div class="success-card">
+            <div class="success-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="book-details">
+                <h3>{{ book.Title }}</h3>
+                <p>has been successfully added to your cart.</p>
+            </div>
+            <div class="action-buttons">
+                <a href="{% url 'view_cart' %}" class="btn view-cart-btn">
+                    <i class="bi bi-cart me-2"></i>View Cart
+                </a>
+                <a href="{% url 'book_list' %}" class="btn continue-shopping-btn">
+                    <i class="bi bi-arrow-left me-2"></i>Continue Shopping
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<a href="{% url 'view_cart' %}">View Cart</a> |
-<a href="{% url 'book_list' %}">Continue Shopping</a>
+<style>
+    /* Modern color palette - matching the cart page */
+    :root {
+        --primary-color: #050505;
+        --primary-dark: #000000;
+        --primary-light: #eef2f7;
+        --accent-color: #272622;
+        --text-dark: #030303;
+        --text-light: #0b0b0b;
+        --bg-light: #3b3d3fcb;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --success: #38a169;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Overall container */
+    .add-to-cart-container {
+        min-height: auto;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Header section with gradient - matching the cart page */
+    .header-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .brand-logo {
+        margin-bottom: 1rem;
+        color: rgb(184, 176, 176);
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-title h1 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Main content */
+    .main-content {
+        padding: 0 1rem 2rem;
+        flex: 1;
+    }
+
+    /* Success card */
+    .success-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        padding: 2rem;
+        text-align: center;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .success-icon {
+        font-size: 3.5rem;
+        color: var(--success);
+        margin-bottom: 1.25rem;
+    }
+
+    .book-details {
+        margin-bottom: 1.75rem;
+    }
+
+    .book-details h3 {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .book-details p {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .view-cart-btn {
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.25rem;
+        font-weight: 500;
+    }
+
+    .view-cart-btn:hover {
+        background-color: black;
+        color: white;
+    }
+
+    .continue-shopping-btn {
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.25rem;
+        font-weight: 500;
+    }
+
+    .continue-shopping-btn:hover {
+        background-color: black;
+        color: white;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .header-section {
+            padding: 1.5rem 0;
+        }
+
+        .success-card {
+            padding: 1.5rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .view-cart-btn, .continue-shopping-btn {
+            width: 100%;
+        }
+    }
+
+    /* Ensure the page takes only the space it needs */
+    html, body {
+        height: auto;
+        min-height: 100%;
+    }
+</style>
 {% endblock %}
