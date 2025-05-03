@@ -1,68 +1,542 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    Checkout - Bookbar
+{% endblock %}
+
 {% block content %}
-  <h2>Checkout</h2>
-
-  {% if cart_items %}
-    <div class="cart-items">
-      <h3>Your Cart Items</h3>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Book</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in cart_items %}
-            <tr>
-              <td>{{ item.book.Title }}</td>
-              <td>{{ item.quantity }}</td>
-              <td>NRP {{ item.book.Price }}</td>
-              <td>NRP {{ item.total_price }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <div class="total-price">
-        <h4>Total Price: NRP {{ total_price }}</h4>
-      </div>
+<div class="checkout-container">
+    <div class="header-section">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="header-title">
+                    <div class="brand-logo">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h1>Checkout</h1>
+                </div>
+            </div>
+        </div>
     </div>
-  {% else %}
-    <p>Your cart is empty.</p>
-    <a href="{% url 'view_cart' %}">Go back to cart</a>
-  {% endif %}
 
-  {% if cart_items %}
-    <h3>Shipping and Payment Information</h3>
-    <form method="POST">
-      {% csrf_token %}
+    <div class="container main-content">
+        {% if cart_items %}
+            <div class="row">
+                <!-- Order Summary Section -->
+                <div class="col-lg-4 order-lg-2 mb-4">
+                    <div class="order-summary">
+                        <div class="summary-header">
+                            <h3>Order Summary</h3>
+                        </div>
+                        <div class="summary-body">
+                            <div class="items-count">
+                                <span>{{ cart_items|length }} item{% if cart_items|length > 1 %}s{% endif %} in cart</span>
+                            </div>
+                            
+                            <div class="summary-items">
+                                {% for item in cart_items %}
+                                <div class="summary-item">
+                                    <div class="item-name">{{ item.book.Title }} <span class="item-quantity">x{{ item.quantity }}</span></div>
+                                    <div class="item-price">Nrs {{ item.total_price }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="summary-divider"></div>
+                            
+                            <div class="summary-total">
+                                <div class="total-label">Total</div>
+                                <div class="total-amount">Nrs {{ total_price }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="back-to-cart">
+                        <a href="{% url 'view_cart' %}" class="btn custom-btn-outline w-100">
+                            <i class="bi bi-arrow-left me-2"></i>Back to Cart
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Checkout Form Section -->
+                <div class="col-lg-8 order-lg-1">
+                    <div class="checkout-form-container">
+                        <div class="form-header">
+                            <h3>Shipping and Payment Information</h3>
+                        </div>
+                        
+                        <div class="form-body">
+                            <form method="POST">
+                                {% csrf_token %}
+                                
+                                <div class="form-section">
+                                    <h4 class="section-title">
+                                        <i class="bi bi-geo-alt me-2"></i>Shipping Details
+                                    </h4>
+                                    
+                                    <div class="mb-3">
+                                        <label for="shipping_name" class="form-label">Full Name</label>
+                                        <input type="text" id="shipping_name" name="shipping_name" class="form-control" value="{{ form.shipping_name.value }}" required>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="shipping_address" class="form-label">Shipping Address</label>
+                                        <textarea id="shipping_address" name="shipping_address" class="form-control" rows="3" required>{{ form.shipping_address.value }}</textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-section">
+                                    <h4 class="section-title">
+                                        <i class="bi bi-credit-card me-2"></i>Payment Method
+                                    </h4>
+                                    
+                                    <div class="payment-options">
+                                        <div class="form-check payment-option">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="cash" {% if form.payment_method.value == 'cash' or not form.payment_method.value %}checked{% endif %}>
+                                            <label class="form-check-label" for="payment_cash">
+                                                <div class="payment-icon">
+                                                    <i class="bi bi-cash"></i>
+                                                </div>
+                                                <div class="payment-details">
+                                                    <span class="payment-name">Cash on Delivery</span>
+                                                    <span class="payment-description">Pay when you receive your books</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="form-check payment-option">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_khalti" value="khalti" {% if form.payment_method.value == 'khalti' %}checked{% endif %}>
+                                            <label class="form-check-label" for="payment_khalti">
+                                                <div class="payment-icon khalti-icon">
+                                                    <i class="bi bi-wallet2"></i>
+                                                </div>
+                                                <div class="payment-details">
+                                                    <span class="payment-name">Khalti</span>
+                                                    <span class="payment-description">Pay using Khalti digital wallet</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="checkout-actions">
+                                    <button type="submit" class="btn custom-btn-dark w-100">
+                                        <i class="bi bi-lock me-2"></i>Proceed to Payment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <div class="empty-icon">
+                    <i class="bi bi-cart"></i>
+                </div>
+                <h3>Your cart is empty</h3>
+                <p>You need to add items to your cart before checking out.</p>
+                <div class="empty-actions">
+                    <a href="{% url 'view_cart' %}" class="btn custom-btn-outline me-2">
+                        <i class="bi bi-arrow-left me-2"></i>Go to Cart
+                    </a>
+                    <a href="{% url 'book_list' %}" class="btn custom-btn-dark">
+                        <i class="bi bi-book me-2"></i>Browse Books
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
 
-      <div class="form-group">
-        <label for="shipping_name">Shipping Name</label>
-        <input type="text" id="shipping_name" name="shipping_name" class="form-control" value="{{ form.shipping_name.value }}" required>
-      </div>
+<div class="footer-section">
+    <p>© 2025 Bookbar. All rights reserved.</p>
+</div>
 
-      <div class="form-group">
-        <label for="shipping_address">Shipping Address</label>
-        <textarea id="shipping_address" name="shipping_address" class="form-control" required>{{ form.shipping_address.value }}</textarea>
-      </div>
+<style>
+    /* Modern color palette */
+    :root {
+        --primary-color: #050505;
+        --primary-dark: #000000;
+        --primary-light: #eef2f7;
+        --accent-color: #272622;
+        --text-dark: #030303;
+        --text-light: #0b0b0b;
+        --bg-light: #3b3d3fcb;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --danger: #e53e3e;
+        --success: #38a169;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+        --hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
 
-      <div class="form-group">
-        <label for="payment_method">Payment Method</label>
-        <select id="payment_method" name="payment_method" class="form-control" required>
-          <option value="cash" {% if form.payment_method.value == 'cash' %}selected{% endif %}>Cash</option>
-          <option value="khalti" {% if form.payment_method.value == 'khalti' %}selected{% endif %}>Khalti</option>
-        </select>
-      </div>
+    /* Overall container */
+    .checkout-container {
+        min-height: 100vh;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+    }
 
-      <button type="submit" class="btn btn-success">Proceed to Payment</button>
-    </form>
-  {% endif %}
+    /* Header section with gradient */
+    .header-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 2.5rem 0;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-  <br>
-  <a href="{% url 'view_cart' %}" class="btn btn-secondary">Back to Cart</a>
+    .header-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .brand-logo {
+        margin-right: 1rem;
+        color: rgb(184, 176, 176);
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-title h1 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Main content */
+    .main-content {
+        padding-bottom: 3rem;
+    }
+
+    /* Order Summary */
+    .order-summary {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .summary-header {
+        background-color: var(--primary-light);
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .summary-header h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: var(--text-dark);
+    }
+
+    .summary-body {
+        padding: 1.5rem;
+    }
+
+    .items-count {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .summary-items {
+        margin-bottom: 1.5rem;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+    }
+
+    .item-name {
+        font-weight: 500;
+        color: var(--text-dark);
+        flex: 1;
+        padding-right: 1rem;
+    }
+
+    .item-quantity {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        font-weight: normal;
+    }
+
+    .item-price {
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+
+    .summary-divider {
+        height: 1px;
+        background-color: var(--border-color);
+        margin: 1.25rem 0;
+    }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .total-label {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text-dark);
+    }
+
+    .total-amount {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--accent-color);
+    }
+
+    .back-to-cart {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Checkout Form */
+    .checkout-form-container {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .form-header {
+        background-color: var(--primary-light);
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .form-header h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: var(--text-dark);
+    }
+
+    .form-body {
+        padding: 1.5rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: var(--text-dark);
+    }
+
+    .form-control {
+        border: 1px solid var(--border-color);
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+    }
+
+    /* Payment Options */
+    .payment-options {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .payment-option {
+        margin: 0;
+        padding: 0;
+    }
+
+    .payment-option .form-check-input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .payment-option .form-check-label {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .payment-option .form-check-input:checked + .form-check-label {
+        border-color: var(--primary-color);
+        background-color: rgba(74, 111, 165, 0.05);
+    }
+
+    .payment-icon {
+        width: 48px;
+        height: 48px;
+        background-color: var(--primary-light);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+    }
+
+    .khalti-icon {
+        background-color: #5C2D91;
+        color: white;
+    }
+
+    .payment-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .payment-name {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.25rem;
+    }
+
+    .payment-description {
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+
+    /* Checkout Actions */
+    .checkout-actions {
+        margin-top: 2rem;
+    }
+
+    /* Empty Cart */
+    .empty-cart {
+        text-align: center;
+        padding: 4rem 2rem;
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .empty-icon {
+        font-size: 5rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        opacity: 0.7;
+    }
+
+    .empty-cart h3 {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .empty-cart p {
+        color: var(--text-light);
+        max-width: 400px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .empty-actions {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    /* Custom buttons */
+    .custom-btn-dark {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 0.6rem 1.25rem;
+        font-weight: 500;
+    }
+
+    .custom-btn-dark:hover, 
+    .custom-btn-dark:focus {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .custom-btn-outline {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        background-color: transparent;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 0.6rem 1.25rem;
+        font-weight: 500;
+    }
+
+    .custom-btn-outline:hover,
+    .custom-btn-outline:focus {
+        background-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 4px 8px rgba(74, 111, 165, 0.3);
+    }
+
+    /* Footer section */
+    .footer-section {
+        text-align: center;
+        margin-top: 30px;
+        padding: 20px 0;
+        color: #6b6b6b;
+        font-size: 0.9rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .order-lg-1 {
+            order: 1;
+        }
+        .order-lg-2 {
+            order: 2;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header-section {
+            padding: 2rem 0;
+        }
+
+        .empty-actions {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .empty-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
 {% endblock %}
