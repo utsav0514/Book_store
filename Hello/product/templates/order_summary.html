@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Order Summary</h2>
+
+  <p><strong>Order ID:</strong> {{ order.id }}</p>
+  <p><strong>Total:</strong> NRP {{ order.total_price }}</p>
+  <p><strong>Shipping Name:</strong> {{ order.shipping_name }}</p>
+  <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+  <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+
+  <h3>Ordered Items</h3>
+  <ul>
+    {% for item in order_items %}
+      <li>{{ item.book.title }} - Quantity: {{ item.quantity }} - Price: NRP {{ item.price }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'book_list' %}">Continue Shopping</a>
+{% endblock %}

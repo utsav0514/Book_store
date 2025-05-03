@@ -2,10 +2,14 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,authenticate, logout
 
-from .forms import AuthorForm, BookForm,OrderForm,ProfileUpdateForm,Profile
+from .forms import AuthorForm, BookForm,OrderForm,ProfileUpdateForm,Profile,CheckoutForm
 from .models import *  
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+import json
+import requests
+from django.http import JsonResponse
 
 def home(request):
     return render(request, 'home.html' )
@@ -222,3 +226,56 @@ def update_profile(request):
         form = ProfileUpdateForm(instance=profile)
     
     return render(request, 'update_profile.html', {'form': form})
+
+
+@login_required
+def proceed_to_checkout(request):
+    cart = get_object_or_404(Cart, user=request.user)
+    cart_items = CartItem.objects.filter(cart=cart)
+
+    if not cart_items.exists():
+        return redirect('view_cart')
+
+    total_price = sum(item.book.Price * item.quantity for item in cart_items)
+
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            order = Order.objects.create(
+                user=request.user,
+                total_price=total_price,
+                payment_method=form.cleaned_data['payment_method'],
+                shipping_name=form.cleaned_data['shipping_name'],
+                shipping_address=form.cleaned_data['shipping_address']
+            )
+
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    book=item.book,
+                    quantity=item.quantity,
+                    price=item.book.Price
+                )
+
+
+            cart_items.delete()
+
+            return redirect('order_summary', order_id=order.id)
+    else:
+        form = CheckoutForm()
+
+    return render(request, 'checkout.html', {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'form': form
+    })
+
+@login_required
+def order_summary(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order_items = order.orderitem_set.all()
+
+    return render(request, 'order_summary.html', {
+        'order': order,
+        'order_items': order_items
+    })

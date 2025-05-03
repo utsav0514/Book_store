@@ -96,7 +96,7 @@
                                     <h4>Total:</h4>
                                     <h4 class="total-amount">Nrs.{{ total }}</h4>
                                 </div>
-                                <a href="#" class="btn custom-btn-dark w-100 mt-3">
+                                <a href="{%url 'checkout' %}" class="btn custom-btn-dark w-100 mt-3">
                                     <i class="bi bi-credit-card me-2"></i>Proceed to Checkout
                                 </a>
                             </div>
@@ -510,7 +510,7 @@
             });
         });
         
-        // Add event listeners to decrease buttons
+
         decreaseButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const input = this.parentNode.querySelector('input[type="number"]');
@@ -523,3 +523,4 @@
     });
 </script>
 {% endblock %}
+

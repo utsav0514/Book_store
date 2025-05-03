@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Checkout</h2>
+
+  {% if cart_items %}
+    <div class="cart-items">
+      <h3>Your Cart Items</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Book</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+            <tr>
+              <td>{{ item.book.Title }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>NRP {{ item.book.Price }}</td>
+              <td>NRP {{ item.total_price }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="total-price">
+        <h4>Total Price: NRP {{ total_price }}</h4>
+      </div>
+    </div>
+  {% else %}
+    <p>Your cart is empty.</p>
+    <a href="{% url 'view_cart' %}">Go back to cart</a>
+  {% endif %}
+
+  {% if cart_items %}
+    <h3>Shipping and Payment Information</h3>
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="shipping_name">Shipping Name</label>
+        <input type="text" id="shipping_name" name="shipping_name" class="form-control" value="{{ form.shipping_name.value }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="shipping_address">Shipping Address</label>
+        <textarea id="shipping_address" name="shipping_address" class="form-control" required>{{ form.shipping_address.value }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="payment_method">Payment Method</label>
+        <select id="payment_method" name="payment_method" class="form-control" required>
+          <option value="cash" {% if form.payment_method.value == 'cash' %}selected{% endif %}>Cash</option>
+          <option value="khalti" {% if form.payment_method.value == 'khalti' %}selected{% endif %}>Khalti</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success">Proceed to Payment</button>
+    </form>
+  {% endif %}
+
+  <br>
+  <a href="{% url 'view_cart' %}" class="btn btn-secondary">Back to Cart</a>
+{% endblock %}

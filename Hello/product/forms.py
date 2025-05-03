@@ -18,7 +18,11 @@ class BookForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = [] 
+        fields = ['shipping_name', 'shipping_address', 'payment_method']
+        widgets = {
+            'shipping_address': forms.Textarea(attrs={'rows': 3}),
+            'payment_method': forms.RadioSelect(),  # optional for radio buttons
+        }
 
 class User_RegistrationForm(forms.ModelForm):
     class Meta:
@@ -47,3 +51,8 @@ class CartItemForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
        
         self.fields['quantity'].widget.attrs.update({'min': 1})  
+
+class CheckoutForm(forms.Form):
+    shipping_name = forms.CharField(max_length=100, required=True)
+    shipping_address = forms.CharField(widget=forms.Textarea, required=True)
+    payment_method = forms.ChoiceField(choices=Order.PAYMENT_METHODS, required=True)
