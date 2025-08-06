@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirement.txt
 FROM python:3.11-slim 
 WORKDIR /app
 
-COPY --from =builder /usr/local  /usr/local
+COPY --from=builder /usr/local  /usr/local
 
 COPY . .
 EXPOSE 8000
